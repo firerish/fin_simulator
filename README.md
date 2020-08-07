@@ -1,3 +1,6 @@
+# Ireland Financial / Retirement Simulator
+
+
 ## User Guide
 
 ***Disclaimer**: I am not an accountant, or a financial advisor, or a tax expert of any kind. I do not claim that this spreadsheet accounts for all situations or taxes, or that its forecasts are accurate. This is not a professionally developed financial planning tool. I developed it for my own use, based on my own research, and it likely has errors and omissions. I recommend doing your own research and consulting with professional tax and financial advisors on your particular situation.
