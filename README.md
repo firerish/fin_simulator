@@ -1,5 +1,6 @@
-# Ireland Financial / Retirement Simulator
+# Ireland Retirement Simulator
 
+*This project contains the code of the [Ireland Retirement Simulator spreadsheet](https://docs.google.com/spreadsheets/d/1aPClS0_Fi4x14zIkQORALhZeFEeWw611Z-rrXYvy5Ko/edit?usp=sharing ). The goal of the project is to enable collaboration and evolve the simulator. Any time a pull request is accepted and merged, the spreadsheet will be updated.*
 
 ## User Guide
 
