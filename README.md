@@ -1,19 +1,19 @@
 ## User Guide
 
-Disclaimer: I am not an accountant, or a financial advisor, or a tax expert of any kind. I do not claim that this spreadsheet accounts for all situations or taxes, or that its forecasts are accurate. This is not a professionally developed financial planning tool. I developed it for my own use, based on my own research, and it likely has errors and omissions. I recommend doing your own research and consulting with professional tax and financial advisors on your particular situation.
-Please let me know if you find any issues. I'm /u/firerish on reddit.
+***Disclaimer**: I am not an accountant, or a financial advisor, or a tax expert of any kind. I do not claim that this spreadsheet accounts for all situations or taxes, or that its forecasts are accurate. This is not a professionally developed financial planning tool. I developed it for my own use, based on my own research, and it likely has errors and omissions. I recommend doing your own research and consulting with professional tax and financial advisors on your particular situation.
+Please let me know if you find any issues. I'm [/u/firerish](http://www.reddit.com/u/firerish) on reddit.*
 											
-#### Introduction
+### Introduction
 
 The main point of this exercise is to experiment with different ways to use your money and see how they play out in your retirement. You can let it sit in your bank account and lose buying power to inflation, or you may invest it in real estate, in the stock market, or in pension funds. This simulator assumes a constant yearly growth rate for things like inflation, investments, and other factors. You specify those rates so you can see what happens if inflation is higher, investments grow slower, etc. I recommend entering conservative figures. Use the worst plausible growth rates to stress test your scenarios. My next project is to run scenarios based on historical data, but for now it's up to you to come up with realistic growth rates (hint: the past ten years are not the norm). Also note that I'm not using the usual "safe withdrawal rate". Instead, the simulation takes as much as it needs from various funds to pay for the specified expenses. If it runs out of money before age 90, the scenario failed.
 
-#### Before you start
+### Before you start
 
 - Before you do anything else, make your own copy of this spreadsheet. You won't be able to run your own scenarios otherwise.
 - I plan to fix bugs and add new features for some time. Come back here every once in a while to check the version (and the change log at the bottom of this page).
 - This spreadsheet runs on Google App Scripts, so in order to run it you need to give it permission. Google will walk you through that process the first time you hit "run". Be aware that it will say that you're entering an insecure page (this is Google making sure you know what you're doing). Before giving permision you should take a look at the code by going to Tools -> Script Editor and verify that it doesn't do anything nefarious. I didn't write anything objectionable (other than the quality of the code), but you may be looking at a copy modified by someone with bad intentions.
   
-#### Parameters
+### Parameters
 
 On the left of the "Params" tab you'll find the basic parameters. I'll explain the non-obvious here:
 - **Initial savings**: How much money you have sitting in your bank account
@@ -27,7 +27,7 @@ On the left of the "Params" tab you'll find the basic parameters. I'll explain t
 - **Trust growth**: Investment trusts are actively managed funds, thus have higher fees and risk, but gains are taxed on exit at 33%. Dividends are not considered as a separate event and are assumed to be reinvested. You can read more about investment options here.
 - **Priorities**: Once in retirement you will start to draw down on your investments. Here you decide where to take money from first (priority 1), then where to take it from after the first choice is depleted (priority 2), and so on.
 
-#### Events
+### Events
 
 These are the life events that define your scenario. Each event is a row in this table, where each column is described as:
   
@@ -62,7 +62,7 @@ These are the supported event types:
   - The starting age of a mortgage (and corresponding purchase) can be before the current age. In that case the simulation will start with the correct number of loan re-payments already made.
   - You can sell a property before the loan is fully paid, the value you'll get takes the remaining debt into account.
 
-#### Cashflow graph
+### Cashflow graph
 
 This graph shows the sources of income, before taxes, stacked on top of each other. Overlayed you'll see two lines, one for net income and one for expenses. Real Estate events can generate spikes in this graph, as you get a large amount of income when you sell a property.
 
@@ -70,27 +70,27 @@ Your scenario fails when income falls below expenses. This can happen because yo
 
 You can see a larger, more detailed version of this graph in the Income tab.
 
-#### Assets graph
+### Assets graph
 
 This graph shows the different assets: cash savings, real estate, pension and investments. Your scenario fails when the only asset left is real estate. You can add an event to sell a property, if you have one, to avoid that. If that is your only property, add an expense event for rent.
 
 There's a larger version of this graph in the Assets tab.										
 
-#### Data tab
+### Data tab
 
 Here you will see the actual numbers as they are computed by the simulator, year by year, from your current age to the age of 100.
 
 The columns are mostly self-explanatory. The cash column under income may raise some eyebrows: it shows withdrawals from cash savings to cover expenses when the net income is not enough.
 											
-#### Known issues
+### Known issues
 - State pension is only computed for one person. The private pension contribution percentage is assumed to be the same for both individuals.
 - Some ETFs and investment trusts pay dividends which are taxed at 52%. When building this simulator I assumed the use of investments that accumulate dividends.
 - There's other types of investments that pay different taxes on dividends and gains, I only implemented EU-based ETFs and trusts.
 
-#### Change log
-1.00: Initial release.
-1.01: Added marginal relief tax for age 65 or older and fixed an issue with the way I kept track of single vs. married.
-1.02: Fixed issue where the system hoarded excess cash instead of investing it when salary income continued past retirement age.
-1.03: Fixed issue where the company pension match was being taxed as income.
-1.04: Fixed issue where pension contribution was not being deducted from net income or shown in the data tab.
-1.05: Fixed issue with the maximum tax benefit for the occupational pension (thanks Hannah!).
+### Change log
+- 1.00: Initial release.
+- 1.01: Added marginal relief tax for age 65 or older and fixed an issue with the way I kept track of single vs. married.
+- 1.02: Fixed issue where the system hoarded excess cash instead of investing it when salary income continued past retirement age.
+- 1.03: Fixed issue where the company pension match was being taxed as income.
+- 1.04: Fixed issue where pension contribution was not being deducted from net income or shown in the data tab.
+- 1.05: Fixed issue with the maximum tax benefit for the occupational pension (thanks Hannah!).
