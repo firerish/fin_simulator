@@ -19,10 +19,14 @@ function run() {
   progress.setBackground("#E0E0E0")
   progress.setValue("Initializing");
 
-  let startingBalance = spreadsheet.getRangeByName("StartingBalance").getValue();
-  let emergencyStash = spreadsheet.getRangeByName("EmergencyStash").getValue();
   let startingAge = spreadsheet.getRangeByName("StartingAge").getValue();
+  let initialSavings = spreadsheet.getRangeByName("InitialSavings").getValue();
+  let initialPension = spreadsheet.getRangeByName("InitialPension").getValue();
+  let initialETFs = spreadsheet.getRangeByName("InitialETFs").getValue();
+  let initialTrusts = spreadsheet.getRangeByName("InitialTrusts").getValue();
+
   let retirementAge = spreadsheet.getRangeByName("RetirementAge").getValue();
+  let emergencyStash = spreadsheet.getRangeByName("EmergencyStash").getValue();
   let pensionPercentage = spreadsheet.getRangeByName("PensionContributionPercentage").getValue();
   let statePensionWeekly = spreadsheet.getRangeByName("StatePensionWeekly").getValue();
   let growthRatePension = spreadsheet.getRangeByName("PensionGrowthRate").getValue();
@@ -84,9 +88,13 @@ function run() {
   let Worth = spreadsheet.getRangeByName("Worth");
 
   revenue = new Revenue();
+  pension = new Pension(growthRatePension);
   etf = new ETF(growthRateETF);
   trust = new InvestmentTrust(growthRateTrust);
-  pension = new Pension(growthRatePension);
+  if (initialPension > 0) pension.buy(initialPension);
+  if (initialETFs > 0) etf.buy(initialETFs);
+  if (initialTrusts > 0) trust.buy(initialTrusts);
+
   realEstate = new RealEstate();
   periods = 0;
   let success = true;
@@ -199,7 +207,7 @@ function run() {
   age = startingAge - 1;
   year = new Date().getFullYear() - 1;
   phase = Phases.growth;
-  cash = startingBalance;
+  cash = initialSavings;
   let row = 0;
  
   while (age < 100) {
