@@ -41,6 +41,9 @@ function run() {
   let priorityPension = spreadsheet.getRangeByName("Priorities").getCell(2,2).getValue();
   let priorityEtf = spreadsheet.getRangeByName("Priorities").getCell(3,2).getValue();
   let priorityTrust = spreadsheet.getRangeByName("Priorities").getCell(4,2).getValue();
+  
+  incomeTaxBracket = spreadsheet.getRangeByName("IncomeTaxBracket").getValue();
+  incomeTaxCredit = spreadsheet.getRangeByName("IncomeTaxCredit").getValue();
 
   let errors = false;
   spreadsheet.getRangeByName("Parameters").setBackground("#ffffff");
