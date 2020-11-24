@@ -5,8 +5,9 @@ class Revenue {
     this.people = 1;
   }
   
-  declareSalaryIncome(amount) {
+  declareSalaryIncome(amount, pensionContribRate) {
     this.income += amount;
+    this.pensionContribRelief += pensionContribRate * Math.min(amount, adjust_(115000,inflation));
     this.salaries++;
     if (this.salaries > 1) {
       this.people = 2;
@@ -39,7 +40,7 @@ class Revenue {
     }
     this.gains[taxRate] += amount;
   }
-  
+    
   computeTaxes() {
     this.computePAYE();
     this.computePRSI();
@@ -62,6 +63,7 @@ class Revenue {
     this.statePension = 0;
     this.privatePension = 0;
     this.investmentIncome = 0;
+    this.pensionContribRelief = 0;
     this.salaries = 0;
     this.paye = 0;
     this.prsi = 0;
@@ -70,7 +72,7 @@ class Revenue {
   }
   
   computePAYE() {
-    let taxable = this.income + this.privatePension + this.nonEuShares;
+    let taxable = this.income + this.privatePension + this.nonEuShares - this.pensionContribRelief;
     let limit = adjust_(this.salaries === 1 ? 44300 : 70600, inflation);
     let tax = 0.2 * Math.min(taxable, limit) + 0.4 * Math.max(taxable - limit, 0);
     let credit = adjust_(this.people * 1650, inflation);
