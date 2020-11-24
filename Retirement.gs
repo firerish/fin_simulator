@@ -286,10 +286,9 @@ function run() {
             let personalContrib = contribRate * amount;
             let companyContrib = companyMatch * amount;
             let totalContrib = personalContrib + companyContrib;
-            let maxRelief = contribRate * Math.min(amount, adjust_(115000,inflation))
             pensionContribution += totalContrib;
             pension.buy(totalContrib);
-            revenue.declareSalaryIncome(amount - maxRelief);
+            revenue.declareSalaryIncome(amount, contribRate);
          }
           break;
         case 'UI': // RSU income
