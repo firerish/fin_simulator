@@ -73,9 +73,9 @@ class Revenue {
   
   computePAYE() {
     let taxable = this.income + this.privatePension + this.nonEuShares - this.pensionContribRelief;
-    let limit = adjust_(this.salaries === 1 ? 44300 : 70600, inflation);
+    let limit = adjust_(incomeTaxBracket + (this.salaries > 1 ? 26300 : 0), inflation);
     let tax = 0.2 * Math.min(taxable, limit) + 0.4 * Math.max(taxable - limit, 0);
-    let credit = adjust_(this.people * 1650, inflation);
+    let credit = adjust_(this.people * incomeTaxCredit, inflation);
     if (age < 65 || taxable > adjust_(this.people * 18000, inflation)) {
       this.paye = Math.max(tax - credit, 0);
     } else {
