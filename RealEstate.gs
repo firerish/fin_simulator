@@ -43,7 +43,7 @@ class RealEstate {
     return 0;
   }
   
-  getValue() {
+  getTotalValue() {
     let sum = 0;
     for (let id of Object.keys(this.properties)) {
       sum += this.properties[id].getValue();
