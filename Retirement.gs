@@ -241,7 +241,7 @@ function run() {
     pension.addYear();
     realEstate.addYear();
 
-//    console.log("========= Age: "+age+" =========");
+//     console.log("========= Age: "+age+" =========");
 
     // Private Pension
     
@@ -317,11 +317,11 @@ function run() {
           if (age === event.fromAge) {
             realEstate.buy(event.id, amount, event.rate);
             expenses += amount;
-//            console.log("Buy property ["+event.id+"] with "+Math.round(amount)+"  downpayment (valued "+Math.round(realEstate.getValue(event.id))+")");
+//            console.log("Buy property ["+event.id+"] with "+Math.round(amount)+"  downpayment (valued "+Math.round(realEstate.getValue(event.id))+")");            
           }
           // sale
           if (age === event.toAge) { 
-//            console.log("Sell property ["+event.id+"] for "+Math.round(realEstate.getValue(event.id)));
+//            console.log("Sell property ["+event.id+"] for "+Math.round(realEstate.getValue(event.id)));            
             cash += realEstate.sell(event.id)
           }
           break;
@@ -360,14 +360,15 @@ function run() {
     }
 
     // If extra cash, invest
-    if (cash > targetCash && incomeSalaries > 0) {
+    if (cash > targetCash + 0.001 && incomeSalaries > 0) {
       let surplus = cash - targetCash;
       etf.buy(surplus * etfAllocation);
       trust.buy(surplus * trustAllocation);
 //      console.log("Bought "+Math.round(surplus * etfAllocation)+" etf, "+Math.round(surplus * trustAllocation)+ " trust");
       cash -= surplus * (etfAllocation + trustAllocation);
     }
-    if (cash < targetCash && netIncome > expenses) {
+    // Any remaining extra income should match what's needed to top-up the emergency stash
+    if (netIncome > expenses && targetCash - cash > 0.001) {
       cash += netIncome - expenses;
     }
     
@@ -378,6 +379,7 @@ function run() {
 
     // This is used below to hide the deemed disposal tax payments, otherwise they're shown as income.
     let etfTax = (incomeEtfRent + incomeTrustRent + cashWithdraw > 0) ? revenue.cgt * incomeEtfRent / (incomeEtfRent + incomeTrustRent + cashWithdraw) : 0;
+    let trustTax = (incomeEtfRent + incomeTrustRent + cashWithdraw > 0) ? revenue.cgt * incomeTrustRent / (incomeEtfRent + incomeTrustRent + cashWithdraw) : 0;
     
     // Update data sheet    
     Age.getCell(row,1).setValue(age);
@@ -388,9 +390,9 @@ function run() {
     IncomePrivatePension.getCell(row,1).setValue(incomePrivatePension);
     IncomeStatePension.getCell(row,1).setValue(incomeStatePension);
     IncomeEtfRent.getCell(row,1).setValue(Math.max(incomeEtfRent - etfTax, 0));
-    IncomeTrustRent.getCell(row,1).setValue(incomeTrustRent);
+    IncomeTrustRent.getCell(row,1).setValue(Math.max(incomeTrustRent - trustTax, 0));
     IncomeCash.getCell(row,1).setValue(Math.max(cashWithdraw,0));
-    RealEstateCapital.getCell(row,1).setValue(realEstate.getValue());
+    RealEstateCapital.getCell(row,1).setValue(realEstate.getTotalValue());
     NetIncome.getCell(row,1).setValue(netIncome);
     Expenses.getCell(row,1).setValue(expenses);
     Savings.getCell(row,1).setValue(savings);
@@ -403,7 +405,7 @@ function run() {
     PRSI.getCell(row,1).setValue(revenue.prsi);
     USC.getCell(row,1).setValue(revenue.usc);
     CGT.getCell(row,1).setValue(revenue.cgt);
-    Worth.getCell(row,1).setValue(realEstate.getValue() + pension.capital() + etf.capital() + trust.capital() + cash);
+    Worth.getCell(row,1).setValue(realEstate.getTotalValue() + pension.capital() + etf.capital() + trust.capital() + cash);
 
     if (row % 4 === 0) SpreadsheetApp.flush();
   }
@@ -482,4 +484,3 @@ function withdraw_(fromCash, fromPension, fromEtf, fromTrust) {
 function adjust_(value, rate, n = periods) {
   return value * (1+rate)**n;
 }
-
