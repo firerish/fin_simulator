@@ -22,23 +22,24 @@ The main point of this exercise is to experiment with different ways to use your
 ### Parameters
 
 On the left of the "Params" tab you'll find the basic parameters. I'll explain the non-obvious here:
-- **Initial savings**: How much money you have sitting in your bank account
+- **Starting position**: Your current age and how much money you have currently sitting in your bank account, ETFs and Trusts. Keep in mind that since the system doesn't know when you bought those ETFs it can't track their deemed disposal tax, so it "buys" them at the start of the simulation and you will see the corresponding CGT being paid 8 years into the run. 										
 - **Emergency stash**: how much money do you want to have available at all times in case you lose your job or have an expensive unexpected event happen to you.
 - **State pension weekly**: The state pension is paid weekly and depends on how many periods you contributed to it. Read about it here.
-- **Pension contribution**: How much do you want to pay into a private occupational pension scheme. If you enter 100% here, it will contribute the maximum allowed (15% - 40% of your gross salary depending on age).
+- **Pension contribution**: How much you want to pay into a private occupational pension scheme. If you enter 100% here, it will contribute the maximum allowed (15% - 40% of your gross salary depending on age).
 - **ETF allocation**: If you have any money left after contributing to private pension, paying for expenses and taxes, how much of that do you want to invest in ETFs.
-- **Trust allocation**: Same as above but for investment trusts. So the sum of both can't exceed 100%. If they add up to anything less than 100%, you'll be saving that in cash.
+- **Trust allocation**: Same as above but for investment trusts (or anything that pays 33% CGT with no deemed disposal, like individual shares). So the sum of both can't exceed 100%. If they add up to anything less than 100%, you'll be saving that in cash.
 - **Pension growth**: How much you expect the pension fund to grow yearly. Pension providers let you choose between different portfolios, so you have some control over this. Keep in mind they tend to have higher fees, so take that into account when calculating this number.
-- **ETF growth**: ETFs have very low fees but gains are taxed at 41% on exit and every 8 years. They are still a valid instrument because they allow you to diversify effortlessly. In case you're wondering, the simulation tracks and computes the deemed disposal tax for each separate (yearly) purchase. Dividends are not considered as a separate event and are assumed to be reinvested.
-- **Trust growth**: Investment trusts are actively managed funds, thus have higher fees and risk, but gains are taxed on exit at 33%. Dividends are not considered as a separate event and are assumed to be reinvested. You can read more about investment options here.
+- **ETF growth**: ETFs have very low fees but gains are taxed at 41% on exit and every 8 years (deemed disposal). They are still a valid instrument because they allow you to diversify effortlessly. In case you're wondering, the simulation tracks and computes the deemed disposal tax for each separate (yearly) purchase. Dividends are not considered as a separate event and are assumed to be reinvested.
+- **Trust growth**: This is the expected growth investment trusts, individual shares, or any asset that is taxed at 33% on exit gains. Again dividends are not considered as a separate event and are assumed to be reinvested. You can read more about investment options here.
 - **Priorities**: Once in retirement you will start to draw down on your investments. Here you decide where to take money from first (priority 1), then where to take it from after the first choice is depleted (priority 2), and so on.
+- **Revenue parameters**: As each one of us has different personal situations (married, dependent children, etc) that would be difficult to capture as events, here's where you should enter the numbers that apply to you, for example your income tax bracket cut-off point, your income tax credit, etc. Remember these numbers will be adjusted by inflation year after year in the simulation, so enter the numbers that apply to you today.
 
 ### Events
 
 These are the life events that define your scenario. Each event is a row in this table, where each column is described as:
   
-1. **Event spec**: Specifies the event type and name. It has to follow the format <type>:<name> (for example "E:college").
-   - Type must be one of SI (salary income), RI (rent income), UI (RSU income), E (expense), R (real estate), M (mortgage).
+1. **Event spec**: Specifies the event type and name. It has to follow the format <*type*>:<*name*> (for example "E:college").
+   - Type must be one of **SI** (salary income), **RI** (rent income), **UI** (RSU income), **E** (expense), **R** (real estate), **M** (mortgage).
    - The name can be anything you like, it's just so you know what it is. It's only important when it comes to real estate and mortgages, as explained below.
    - There can be more than one event for a type, for example changing salaries, adding a partner's salary, buying more than one property, etc.
 2. **Value**: An amount of money, for example your salary (SI) or your expenses (E). With every passing year this value will be adjusted at the rate specified in the fifth column, or at the rate of inflation if the rate is left empty.
@@ -74,13 +75,13 @@ This graph shows the sources of income, before taxes, stacked on top of each oth
 
 Your scenario fails when income falls below expenses. This can happen because you're spending more than you earn, because you're contributing too much to a private pension, or because you run out of funds during retirement.
 
-You can see a larger, more detailed version of this graph in the Income tab.
+You can see a larger, more detailed version of this graph in the "Cashflow" tab.
 
 ### Assets graph
 
-This graph shows the different assets: cash savings, real estate, pension and investments. Your scenario fails when the only asset left is real estate. You can add an event to sell a property, if you have one, to avoid that. If that is your only property, add an expense event for rent.
+This graph shows the different assets: real estate, cash savings, pension and investments. Your scenario fails when the only asset left is real estate. You can add an event to sell a property, if you have one, to avoid that. If that is your only property, add an expense event for rent.
 
-There's a larger version of this graph in the Assets tab.										
+There's a larger version of this graph in the "Assets" tab.										
 
 ### Data tab
 
@@ -100,3 +101,6 @@ The columns are mostly self-explanatory. The cash column under income may raise 
 - 1.03: Fixed issue where the company pension match was being taxed as income.
 - 1.04: Fixed issue where pension contribution was not being deducted from net income or shown in the data tab.
 - 1.05: Fixed issue with the maximum tax benefit for the occupational pension (thanks Hannah!).
+- 1.06: Added initial pension, ETFs & Trusts positions. It can't track deemed disposal for pre-existing ETF funds, so they are bought at the starting age (thanks John M!).										
+- 1.07: Fixed wrongly applied pension contribution tax relief and added income tax bracket and credit parameters to allow for different personal situations (thanks Ewan!)										
+- 1.08: Fixed issue with property value method call and a rounding error that caused extra income to be occasionally counted twice.										
