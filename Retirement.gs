@@ -43,18 +43,23 @@ function run() {
   let priorityTrust = spreadsheet.getRangeByName("Priorities").getCell(4,2).getValue();
   
   incomeTaxBracket = spreadsheet.getRangeByName("IncomeTaxBracket").getValue();
-  incomeTaxCredit = spreadsheet.getRangeByName("IncomeTaxCredit").getValue();
+  personalTaxCredit = spreadsheet.getRangeByName("PersonalTaxCredit").getValue();
+
+  let minPrivatePensionRetirementAge = 50;
+  let minOccupationalPensionRetirementAge = 60;
+  let statePensionQualifyingAge = 68;
+  let statePensionIncreaseAge = 80;
+  let statePensionIncreaseAmount = 10;
 
   let errors = false;
   spreadsheet.getRangeByName("Parameters").setBackground("#ffffff");
   spreadsheet.getRangeByName("Parameters").clearNote();
 
-  if (retirementAge < 60) {
-    if (retirementAge < 50) {
-      spreadsheet.getRangeByName("RetirementAge").setNote("Warning: Private pensions don't normally allow retirement before age 50.");
-    } else {
-      spreadsheet.getRangeByName("RetirementAge").setNote("Warning: Only occupational pension schemes allow retirement before age 60.");
-    }
+  if (retirementAge < minOccupationalPensionRetirementAge) {
+    spreadsheet.getRangeByName("RetirementAge").setNote("Warning: Only occupational pension schemes allow retirement before age 60.");
+  }
+  if (retirementAge < minPrivatePensionRetirementAge) {
+    spreadsheet.getRangeByName("RetirementAge").setNote("Warning: Private pensions don't normally allow retirement before age 50.");
   }
   
   if (etfAllocation + trustAllocation > 1) {
@@ -75,7 +80,7 @@ function run() {
   let IncomeEtfRent = spreadsheet.getRangeByName("EtfRent");
   let IncomeTrustRent = spreadsheet.getRangeByName("TrustRent");
   let IncomeCash = spreadsheet.getRangeByName("IncomeCash");
-  let PAYE = spreadsheet.getRangeByName("PAYE");
+  let IT = spreadsheet.getRangeByName("IT");
   let PRSI = spreadsheet.getRangeByName("PRSI");
   let USC = spreadsheet.getRangeByName("USC");
   let CGT = spreadsheet.getRangeByName("CGT");
@@ -241,7 +246,7 @@ function run() {
     pension.addYear();
     realEstate.addYear();
 
-//     console.log("========= Age: "+age+" =========");
+//    console.log("========= Age: "+age+" =========");
 
     // Private Pension
     
@@ -255,11 +260,10 @@ function run() {
     }
 
     // State Pension
-    
-    if (age >= 68) {
+    if (age >= statePensionQualifyingAge) {
       incomeStatePension = 52 * adjust_(statePensionWeekly, inflation);
-      if (age >= 80) {
-        incomeStatePension += 52 * adjust_(10, inflation);
+      if (age >= statePensionIncreaseAge) {
+        incomeStatePension += 52 * adjust_(statePensionIncreaseAmount, inflation);
       }
     }
     revenue.declareStatePensionIncome(incomeStatePension);
@@ -401,7 +405,7 @@ function run() {
     EtfCapital.getCell(row,1).setValue(etf.capital());
     TrustCapital.getCell(row,1).setValue(trust.capital());
     PensionContribution.getCell(row,1).setValue(pensionContribution);
-    PAYE.getCell(row,1).setValue(revenue.paye);
+    IT.getCell(row,1).setValue(revenue.it);
     PRSI.getCell(row,1).setValue(revenue.prsi);
     USC.getCell(row,1).setValue(revenue.usc);
     CGT.getCell(row,1).setValue(revenue.cgt);
