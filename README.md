@@ -36,8 +36,8 @@ On the left of the "Params" tab you'll find the basic parameters. I'll explain t
 
 ### Events
 
-These are the life events that define your scenario. Each event is a row in this table, where each column is described as:
-  
+These are the life events that define your scenario. Each event is a row in this table. You can add, remove or change rows, and enter any number of events. Each event is described by entering the following information in the columns: 	
+
 1. **Event spec**: Specifies the event type and name. It has to follow the format <*type*>:<*name*> (for example "E:college").
    - Type must be one of **SI** (salary income), **RI** (rent income), **UI** (RSU income), **E** (expense), **R** (real estate), **M** (mortgage).
    - The name can be anything you like, it's just so you know what it is. It's only important when it comes to real estate and mortgages, as explained below.
@@ -101,6 +101,7 @@ The columns are mostly self-explanatory. The cash column under income may raise 
 - 1.03: Fixed issue where the company pension match was being taxed as income.
 - 1.04: Fixed issue where pension contribution was not being deducted from net income or shown in the data tab.
 - 1.05: Fixed issue with the maximum tax benefit for the occupational pension (thanks Hannah!).
-- 1.06: Added initial pension, ETFs & Trusts positions. It can't track deemed disposal for pre-existing ETF funds, so they are bought at the starting age (thanks John M!).										
-- 1.07: Fixed wrongly applied pension contribution tax relief and added income tax bracket and credit parameters to allow for different personal situations (thanks Ewan!)										
-- 1.08: Fixed issue with property value method call and a rounding error that caused extra income to be occasionally counted twice.										
+- 1.06: Added initial pension, ETFs & Trusts positions. It can't track deemed disposal for pre-existing ETF funds, so they are bought at the starting age (thanks John M!).
+- 1.07: Fixed wrongly applied pension contribution tax relief and added income tax bracket and credit parameters to allow for different personal situations (thanks Ewan!)
+- 1.08: Fixed issue with property value method call and a rounding error that caused extra income to be occasionally counted twice.
+- 1.09: Fixed issue applying USC to combined incomes and with increase of cut-off point for joint assessments; split income tax credit from personal tax credit; and some minor code improvements.
