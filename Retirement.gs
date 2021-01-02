@@ -364,16 +364,17 @@ function run() {
     }
 
     // If extra cash, invest
+    let invested = 0;
     if (cash > targetCash + 0.001 && incomeSalaries > 0) {
       let surplus = cash - targetCash;
       etf.buy(surplus * etfAllocation);
       trust.buy(surplus * trustAllocation);
-//      console.log("Bought "+Math.round(surplus * etfAllocation)+" etf, "+Math.round(surplus * trustAllocation)+ " trust");
-      cash -= surplus * (etfAllocation + trustAllocation);
+      invested = surplus * (etfAllocation + trustAllocation);
+      cash -= invested;
     }
-    // Any remaining extra income should match what's needed to top-up the emergency stash
-    if (netIncome > expenses && targetCash - cash > 0.001) {
-      cash += netIncome - expenses;
+    // Any remaining income should be used to top-up the emergency stash
+    if (netIncome > expenses + invested && targetCash - cash > 0.001) {
+      cash += netIncome - (expenses + invested);
     }
     
     if (netIncome < expenses - 100 && success) {

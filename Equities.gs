@@ -18,7 +18,6 @@ class Equity {
   sell(amountToSell) {
     let sold = 0;
     let gains = 0;
-    let original = amountToSell;
     while (amountToSell > 0 && this.portfolio.length > 0) {
       let sale = 0;
       if (amountToSell >= this.portfolio[0].amount + this.portfolio[0].interest) {

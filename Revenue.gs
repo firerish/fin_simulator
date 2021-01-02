@@ -22,10 +22,12 @@ class Revenue {
     this.uscRate2 = 0.020;
     this.uscRate3 = 0.045;
     this.uscRate4 = 0.080;
+    this.cgtTaxRelief = 1270;
   }
   
   declareSalaryIncome(amount, pensionContribRate) {
     this.income += amount;
+    this.pensionContribAmount += pensionContribRate * amount;
     this.pensionContribRelief += pensionContribRate * Math.min(amount, adjust_(this.pensionContribEarningLimit, inflation));
     this.salaries.push(amount);
     this.salaries.sort((a,b) => a-b); // sort lower to higher
@@ -68,7 +70,7 @@ class Revenue {
    
   netIncome() {
     this.computeTaxes();
-    let gross = this.income + this.privatePension + this.statePension + this.investmentIncome + this.nonEuShares;
+    let gross = this.income - this.pensionContribAmount + this.privatePension + this.statePension + this.investmentIncome + this.nonEuShares;
     let taxCredit = (age < 65) ? 0 : adjust_(this.people * this.ageTaxCredit, inflation);
     let tax = Math.max(this.it + this.prsi + this.usc + this.cgt - taxCredit, 0);
     return gross - tax;
@@ -81,6 +83,7 @@ class Revenue {
     this.statePension = 0;
     this.privatePension = 0;
     this.investmentIncome = 0;
+    this.pensionContribAmount = 0;
     this.pensionContribRelief = 0;
     this.salaries = [];
     this.it = 0;
@@ -144,7 +147,7 @@ class Revenue {
   
   computeCGT() {
     let tax = 0;
-    let taxable = -adjust_(1270, inflation); // capital gains tax credit
+    let taxable = -adjust_(this.cgtTaxRelief, inflation); // capital gains tax relief
     // go through the gains from the highest taxed to the least taxed, so that the credit has more impact
     for (let [taxRate, gains] of Object.entries(this.gains).sort((a,b) => b[0].localeCompare(a[0]))) {
       taxable += gains;
