@@ -105,3 +105,5 @@ The columns are mostly self-explanatory. The cash column under income may raise 
 - 1.07: Fixed wrongly applied pension contribution tax relief and added income tax bracket and credit parameters to allow for different personal situations (thanks Ewan!)
 - 1.08: Fixed issue with property value method call and a rounding error that caused extra income to be occasionally counted twice.
 - 1.09: Fixed issue applying USC to combined incomes and with increase of cut-off point for joint assessments; split income tax credit from personal tax credit; and some minor code improvements.
+- 1.10: Fixed issue with pension contributions that weren't deducted from net income.
+- 1.11: Fixed minor issue where income didn't match expenses on retirement when adding to the stash.
