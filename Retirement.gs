@@ -374,7 +374,9 @@ function run() {
     }
     // Any remaining income should be used to top-up the emergency stash
     if (netIncome > expenses + invested && targetCash - cash > 0.001) {
-      cash += netIncome - (expenses + invested);
+      let addToStash = netIncome - (expenses + invested);
+      cash += addToStash;
+      expenses += addToStash;
     }
     
     if (netIncome < expenses - 100 && success) {
@@ -489,3 +491,4 @@ function withdraw_(fromCash, fromPension, fromEtf, fromTrust) {
 function adjust_(value, rate, n = periods) {
   return value * (1+rate)**n;
 }
+
