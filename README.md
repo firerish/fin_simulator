@@ -109,4 +109,4 @@ The columns are mostly self-explanatory. The cash column under income may raise 
 - 1.09: Fixed issue applying USC to combined incomes and with increase of cut-off point for joint assessments; split income tax credit from personal tax credit; and some minor code improvements.
 - 1.10: Fixed issue with pension contributions that weren't deducted from net income.
 - 1.11: Fixed minor issue where income didn't match expenses on retirement when adding to the stash.
-- 1.20: **Montecarlo update**: you can now specify volatility for your investments, in which case the simulator will run 10000 times and tell you what proportion of runs the scenario was successful.										
+- 1.20: **Montecarlo update**: you can now specify volatility for your investments, in which case the simulator will run 10000 times and tell you in what proportion of runs the scenario was successful.										
