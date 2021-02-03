@@ -1,8 +1,9 @@
 class Equity {
 
-  constructor(taxRate, growth) {
+  constructor(taxRate, growth, stdev=0) {
     this.taxRate = taxRate;
     this.growth = growth;
+    this.stdev = stdev;
     this.portfolio = [];
   }
 
@@ -50,19 +51,18 @@ class Equity {
   addYear() {
     // Accumulate interests
     for (let i = 0; i < this.portfolio.length; i++) {
-      this.portfolio[i].interest += (this.portfolio[i].amount + this.portfolio[i].interest) * this.growth;
+      this.portfolio[i].interest += (this.portfolio[i].amount + this.portfolio[i].interest) * gaussian(this.growth,this.stdev);
       this.portfolio[i].age++;
     }
   }
-  
-  
+
 }
 
 
 class ETF extends Equity {
   
-  constructor(growth) {
-    super(0.41, growth);
+  constructor(growth, stdev=0) {
+    super(0.41, growth, stdev);
   }
   
   addYear() {
@@ -84,8 +84,8 @@ class ETF extends Equity {
 
 class InvestmentTrust extends Equity {
 
-  constructor(growth) {
-    super(0.33, growth);
+  constructor(growth, stdev=0) {
+    super(0.33, growth, stdev);
   }
 
 }
@@ -93,8 +93,8 @@ class InvestmentTrust extends Equity {
 
 class Pension extends Equity {
 
-  constructor(growth) {
-    super(0, growth);
+  constructor(growth, stdev=0) {
+    super(0, growth, stdev);
     this.declare = true;
   }
 
