@@ -17,7 +17,7 @@ The main point of this exercise is to experiment with different ways to use your
 
 - Before you do anything else, make your own copy of this spreadsheet. You won't be able to run your own scenarios otherwise.
 - I plan to fix bugs and add new features for some time. Come back here every once in a while to check the version (and the change log at the bottom of this page).
-- This spreadsheet runs on Google App Scripts, so in order to run it you need to give it permission. Google will walk you through that process the first time you hit "run". Be aware that it will say that you're entering an insecure page (this is Google making sure you know what you're doing). Before giving permision you should take a look at the code by going to Tools -> Script Editor and verify that it doesn't do anything nefarious. I didn't write anything objectionable (other than the quality of the code), but you may be looking at a copy modified by someone with bad intentions.
+- This spreadsheet runs on Google App Scripts, so in order to run it you need to give it permission. Google will walk you through that process the first time you hit "run". Before giving permision you should take a look at the code by going to Tools -> Script Editor and verify that it doesn't do anything nefarious. I didn't write anything objectionable (other than the quality of the code), but you may be looking at a copy modified by someone with bad intentions.
   
 ### Parameters
 
