@@ -2,7 +2,12 @@ var age, year, phase, inflation, periods, row, success;
 var revenue, realEstate, stockGrowthOverride;
 var netIncome, expenses, savings, targetCash, cashWithdraw, cashDeficit;
 var incomeStatePension, incomePrivatePension, incomeEtfRent, incomeTrustRent;
-var cash, etf, trust, pension;
+var cash, etf, trust, pension, dataSheet, statusCell;
+var Events, Year, Age, IncomeSalaries, IncomeRSUs, IncomeRentals, IncomePrivatePension;
+var IncomeStatePension, IncomeEtfRent, IncomeTrustRent, IncomeCash, IT, PRSI, USC, CGT;
+var NetIncome, Expenses, Savings, PensionContribution, Cash, RealEstateCapital, EtfCapital;
+var TrustCapital, PensionFund, Worth;
+ 
 
 const Phases = {
   growth: 'growth',
@@ -15,9 +20,10 @@ function run() {
   let spreadsheet = SpreadsheetApp.getActiveSpreadsheet();
   let datasheet = spreadsheet.getSheetByName("Data");
 
-  let progress = spreadsheet.getRangeByName("Progress").getCell(1, 1);
-  progress.setBackground("#E0E0E0")
-  progress.setValue("Initializing");
+  statusCell = spreadsheet.getRangeByName("Progress").getCell(1, 1);
+  statusCell.setBackground("#E0E0E0")
+  statusCell.setValue("Initializing");
+  SpreadsheetApp.flush();
 
   let startingAge = spreadsheet.getRangeByName("StartingAge").getValue();
   let targetAge = spreadsheet.getRangeByName("TargetAge").getValue();
@@ -74,31 +80,31 @@ function run() {
     errors = true;
   }
 
-  let Events = spreadsheet.getRangeByName("Events");
-  let Year = spreadsheet.getRangeByName("Year");
-  let Age = spreadsheet.getRangeByName("Age");
-  let IncomeSalaries = spreadsheet.getRangeByName("Salary");
-  let IncomeRSUs = spreadsheet.getRangeByName("RSUs");
-  let IncomeRentals = spreadsheet.getRangeByName("Rental");
-  let IncomePrivatePension = spreadsheet.getRangeByName("PrivatePension");
-  let IncomeStatePension = spreadsheet.getRangeByName("StatePension");
-  let IncomeEtfRent = spreadsheet.getRangeByName("EtfRent");
-  let IncomeTrustRent = spreadsheet.getRangeByName("TrustRent");
-  let IncomeCash = spreadsheet.getRangeByName("IncomeCash");
-  let IT = spreadsheet.getRangeByName("IT");
-  let PRSI = spreadsheet.getRangeByName("PRSI");
-  let USC = spreadsheet.getRangeByName("USC");
-  let CGT = spreadsheet.getRangeByName("CGT");
-  let NetIncome = spreadsheet.getRangeByName("NetIncome");
-  let Expenses = spreadsheet.getRangeByName("Expenses");
-  let Savings = spreadsheet.getRangeByName("Savings");
-  let PensionContribution = spreadsheet.getRangeByName("PensionContribution");
-  let Cash = spreadsheet.getRangeByName("Cash");
-  let RealEstateCapital = spreadsheet.getRangeByName("RealEstate");
-  let EtfCapital = spreadsheet.getRangeByName("EtfCapital");
-  let TrustCapital = spreadsheet.getRangeByName("TrustCapital");
-  let PensionFund = spreadsheet.getRangeByName("PensionFund");
-  let Worth = spreadsheet.getRangeByName("Worth");
+  Events = spreadsheet.getRangeByName("Events");
+  Year = spreadsheet.getRangeByName("Year");
+  Age = spreadsheet.getRangeByName("Age");
+  IncomeSalaries = spreadsheet.getRangeByName("Salary");
+  IncomeRSUs = spreadsheet.getRangeByName("RSUs");
+  IncomeRentals = spreadsheet.getRangeByName("Rental");
+  IncomePrivatePension = spreadsheet.getRangeByName("PrivatePension");
+  IncomeStatePension = spreadsheet.getRangeByName("StatePension");
+  IncomeEtfRent = spreadsheet.getRangeByName("EtfRent");
+  IncomeTrustRent = spreadsheet.getRangeByName("TrustRent");
+  IncomeCash = spreadsheet.getRangeByName("IncomeCash");
+  IT = spreadsheet.getRangeByName("IT");
+  PRSI = spreadsheet.getRangeByName("PRSI");
+  USC = spreadsheet.getRangeByName("USC");
+  CGT = spreadsheet.getRangeByName("CGT");
+  NetIncome = spreadsheet.getRangeByName("NetIncome");
+  Expenses = spreadsheet.getRangeByName("Expenses");
+  Savings = spreadsheet.getRangeByName("Savings");
+  PensionContribution = spreadsheet.getRangeByName("PensionContribution");
+  Cash = spreadsheet.getRangeByName("Cash");
+  RealEstateCapital = spreadsheet.getRangeByName("RealEstate");
+  EtfCapital = spreadsheet.getRangeByName("EtfCapital");
+  TrustCapital = spreadsheet.getRangeByName("TrustCapital");
+  PensionFund = spreadsheet.getRangeByName("PensionFund");
+  Worth = spreadsheet.getRangeByName("Worth");
 
   // Read events from the parameters sheet
   let events = [];
@@ -164,27 +170,25 @@ function run() {
   }
 
   if (errors) {
-    progress.setValue("Check errors");
-    progress.setBackground("#ffe066");
+    statusCell.setValue("Check errors");
+    statusCell.setBackground("#ffe066");
     return;
   }
 
 
-  let dataSheet = [];
+  dataSheet = [];
 
   let montecarlo = (growthDevPension > 0 || growthDevETF > 0 || growthDevTrust > 0);
-  let runs = (montecarlo ? 10000 : 1);
+  let runs = (montecarlo ? 1000 : 1);
   let successes = 0;
   let failedAt = 0;
   let failedAtAccum = 0;
   let failureCount = 0;
 
-  for (let run = 0; run < runs; run++) {
+  statusCell.setValue("Running");
+  SpreadsheetApp.flush();
 
-    if ((100 * run / runs) % 25 == 0) {
-      progress.setValue(Math.round(100 * run / runs) + "%");
-      SpreadsheetApp.flush();
-    }
+  for (let run = 0; run < runs; run++) {
 
     revenue = new Revenue();
     pension = new Pension(growthRatePension, growthDevPension);
@@ -450,6 +454,11 @@ function run() {
       dataSheet[row].usc += revenue.usc;
       dataSheet[row].cgt += revenue.cgt;
       dataSheet[row].worth += realEstate.getTotalValue() + pension.capital() + etf.capital() + trust.capital() + cash;
+
+      if (!montecarlo) {
+        updateDataRow(row, (age-startingAge) / (100-startingAge));
+      }
+
     }
 
     if (success || failedAt > targetAge) {
@@ -458,60 +467,68 @@ function run() {
 
   }
 
-  progress.setValue("100%");
-  SpreadsheetApp.flush();
-
-  // Update data sheet    
-  for (let i = 1; i <= row; i++) {
-    Age.getCell(i, 1).setValue(dataSheet[i].age / runs);
-    Year.getCell(i, 1).setValue(dataSheet[i].year / runs);
-    IncomeSalaries.getCell(i, 1).setValue(dataSheet[i].incomeSalaries / runs);
-    IncomeRSUs.getCell(i, 1).setValue(dataSheet[i].incomeRSUs / runs);
-    IncomeRentals.getCell(i, 1).setValue(dataSheet[i].incomeRentals / runs);
-    IncomePrivatePension.getCell(i, 1).setValue(dataSheet[i].incomePrivatePension / runs);
-    IncomeStatePension.getCell(i, 1).setValue(dataSheet[i].incomeStatePension / runs);
-    IncomeEtfRent.getCell(i, 1).setValue(dataSheet[i].incomeEtfRent / runs);
-    IncomeTrustRent.getCell(i, 1).setValue(dataSheet[i].incomeTrustRent / runs);
-    IncomeCash.getCell(i, 1).setValue(dataSheet[i].incomeCash / runs);
-    RealEstateCapital.getCell(i, 1).setValue(dataSheet[i].realEstateCapital / runs);
-    NetIncome.getCell(i, 1).setValue(dataSheet[i].netIncome / runs);
-    Expenses.getCell(i, 1).setValue(dataSheet[i].expenses / runs);
-    Savings.getCell(i, 1).setValue(dataSheet[i].savings / runs);
-    PensionFund.getCell(i, 1).setValue(dataSheet[i].pensionFund / runs);
-    Cash.getCell(i, 1).setValue(dataSheet[i].cash / runs);
-    EtfCapital.getCell(i, 1).setValue(dataSheet[i].etfCapital / runs);
-    TrustCapital.getCell(i, 1).setValue(dataSheet[i].trustCapital / runs);
-    PensionContribution.getCell(i, 1).setValue(dataSheet[i].pensionContribution / runs);
-    IT.getCell(i, 1).setValue(dataSheet[i].it / runs);
-    PRSI.getCell(i, 1).setValue(dataSheet[i].prsi / runs);
-    USC.getCell(i, 1).setValue(dataSheet[i].usc / runs);
-    CGT.getCell(i, 1).setValue(dataSheet[i].cgt / runs);
-    Worth.getCell(i, 1).setValue(dataSheet[i].worth / runs);
+  // Update data sheet 
+  if (montecarlo) {   
+    for (let i = 1; i <= row; i++) {
+      updateDataRow(i, i/row, runs);
+    }
   }
   datasheet.getRange(Year.getRow() + row, Year.getColumn(), 100, Worth.getColumn() - Year.getColumn() + 1).clearContent();
-
+  
   //(runs-successes)
   if (montecarlo) {
     let percentSuccess = successes / runs;
     let msg = "Success " + Math.round(1000 * percentSuccess) / 10 + "%";
     // if (failureCount > 0) msg += ", avg fail age " + Math.round(failedAtAccum / failureCount)
-    progress.setValue(msg);
+    statusCell.setValue(msg);
     let r = between(255, 160, percentSuccess);
     let g = between(128, 255, percentSuccess);
     let b = between(128, 160, percentSuccess);
-    progress.setBackground(rgbToHex(r, g, b));
+    statusCell.setBackground(rgbToHex(r, g, b));
   } else {
     if (success || failedAt > targetAge) {
-      progress.setValue(success ? "Success!" : "Made it to " + failedAt);
-      progress.setBackground("#9fdf9f")
+      statusCell.setValue(success ? "Success!" : "Made it to " + failedAt);
+      statusCell.setBackground("#9fdf9f")
     } else {
-      progress.setValue("Failed at age " + failedAt);
-      progress.setBackground("#ff8080")
+      statusCell.setValue("Failed at age " + failedAt);
+      statusCell.setBackground("#ff8080")
     }
   }
   SpreadsheetApp.flush();
 
 }
+
+function updateDataRow(row, progress, scale = 1) {
+  Age.getCell(row, 1).setValue(dataSheet[row].age / scale);
+  Year.getCell(row, 1).setValue(dataSheet[row].year / scale);
+  IncomeSalaries.getCell(row, 1).setValue(dataSheet[row].incomeSalaries / scale);
+  IncomeRSUs.getCell(row, 1).setValue(dataSheet[row].incomeRSUs / scale);
+  IncomeRentals.getCell(row, 1).setValue(dataSheet[row].incomeRentals / scale);
+  IncomePrivatePension.getCell(row, 1).setValue(dataSheet[row].incomePrivatePension / scale);
+  IncomeStatePension.getCell(row, 1).setValue(dataSheet[row].incomeStatePension / scale);
+  IncomeEtfRent.getCell(row, 1).setValue(dataSheet[row].incomeEtfRent / scale);
+  IncomeTrustRent.getCell(row, 1).setValue(dataSheet[row].incomeTrustRent / scale);
+  IncomeCash.getCell(row, 1).setValue(dataSheet[row].incomeCash / scale);
+  RealEstateCapital.getCell(row, 1).setValue(dataSheet[row].realEstateCapital / scale);
+  NetIncome.getCell(row, 1).setValue(dataSheet[row].netIncome / scale);
+  Expenses.getCell(row, 1).setValue(dataSheet[row].expenses / scale);
+  Savings.getCell(row, 1).setValue(dataSheet[row].savings / scale);
+  PensionFund.getCell(row, 1).setValue(dataSheet[row].pensionFund / scale);
+  Cash.getCell(row, 1).setValue(dataSheet[row].cash / scale);
+  EtfCapital.getCell(row, 1).setValue(dataSheet[row].etfCapital / scale);
+  TrustCapital.getCell(row, 1).setValue(dataSheet[row].trustCapital / scale);
+  PensionContribution.getCell(row, 1).setValue(dataSheet[row].pensionContribution / scale);
+  IT.getCell(row, 1).setValue(dataSheet[row].it / scale);
+  PRSI.getCell(row, 1).setValue(dataSheet[row].prsi / scale);
+  USC.getCell(row, 1).setValue(dataSheet[row].usc / scale);
+  CGT.getCell(row, 1).setValue(dataSheet[row].cgt / scale);
+  Worth.getCell(row, 1).setValue(dataSheet[row].worth / scale);
+  if (row % 5 === 0) {
+    statusCell.setValue("Updating "+Math.round(100 * progress) + "%");
+    SpreadsheetApp.flush();
+  }
+}
+
 
 // Get more money from: cash, pension, etfs, trusts, 
 // in the specified order of priority:
