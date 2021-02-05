@@ -62,6 +62,8 @@ function run() {
   let statePensionIncreaseAge = 80;
   let statePensionIncreaseAmount = 10;
 
+  let simulationRuns = 5000;
+
   let errors = false;
   spreadsheet.getRangeByName("Parameters").setBackground("#ffffff");
   spreadsheet.getRangeByName("Parameters").clearNote();
@@ -179,7 +181,7 @@ function run() {
   dataSheet = [];
 
   let montecarlo = (growthDevPension > 0 || growthDevETF > 0 || growthDevTrust > 0);
-  let runs = (montecarlo ? 1000 : 1);
+  let runs = (montecarlo ? simulationRuns : 1);
   let successes = 0;
   let failedAt = 0;
   let failedAtAccum = 0;
