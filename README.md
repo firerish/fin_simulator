@@ -110,4 +110,4 @@ The columns are mostly self-explanatory. The cash column under income may raise 
 - 1.10: Fixed issue with pension contributions that weren't deducted from net income.
 - 1.11: Fixed minor issue where income didn't match expenses on retirement when adding to the stash.
 - 1.20: **Montecarlo update**: you can now specify volatility for your investments, in which case the simulator will run 1000 times and tell you in what proportion of runs the scenario was successful.
-- 1.21: Reduced monte carlo simulations from 10.000 to 1.000, and brought back the gradual update of the graph.
+- 1.21: Reduced monte carlo simulations from 10.000 to 5.000, and brought back the gradual update of the graph.
