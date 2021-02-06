@@ -30,8 +30,7 @@ class Revenue {
     this.pensionContribAmount += pensionContribRate * amount;
     this.pensionContribRelief += pensionContribRate * Math.min(amount, adjust_(this.pensionContribEarningLimit, inflation));
     this.salaries.push(amount);
-    // this.salaries.sort((a,b) => a-b); // sort lower to higher
-    this.salaries.sort((a,b) => b-a); // sort higher to lower, to reflect that the RSUs are being added to my salary
+    this.salaries.sort((a,b) => a-b); // sort lower to higher
     if (this.salaries.length > 1) this.people = 2;
   }
   
