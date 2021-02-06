@@ -24,7 +24,7 @@ The main point of this exercise is to experiment with different ways to use your
 On the left of the "Params" tab you'll find the basic parameters. I'll explain the non-obvious here:
 - **Starting position**: Your current age and how much money you have currently sitting in your bank account, ETFs and Trusts. Keep in mind that since the system doesn't know when you bought those ETFs it can't track their deemed disposal tax, so it "buys" them at the start of the simulation and you will see the corresponding CGT being paid 8 years into the run.
 - **Retirement and target age**: The age at which you would like to retire, and the age that you want to make sure you can reach without running out of money. The scenario fails if you run out of money before you reach the target age. It must be 100 or less. 
-- **Emergency stash**: how much money do you want to have available at all times in case you lose your job or have an expensive unexpected event happen to you.
+- **Emergency stash**: how much money do you want to have available in cash at all times in case you lose your income or some expensive unexpected event.
 - **State pension weekly**: The state pension is paid weekly and depends on how many periods you contributed to it. Read about it here.
 - **Pension contribution**: How much you want to pay into a private occupational pension scheme. If you enter 100% here, it will contribute the maximum allowed (15% - 40% of your gross salary depending on age).
 - **ETF allocation**: If you have any money left after contributing to private pension, paying for expenses and taxes, how much of that do you want to invest in ETFs.
