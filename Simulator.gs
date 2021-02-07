@@ -619,3 +619,10 @@ function rgbToHex(r, g, b) {
 function between(a, b, p) {
   return Math.round(a + (b - a) * p);
 }
+
+function onEdit(e) {
+  if (e.range.getA1Notation() == 'F2') {
+    e.range.setValue("");
+    run()
+  }
+}
