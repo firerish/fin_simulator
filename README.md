@@ -59,9 +59,9 @@ These are the supported event types:
 - **Real Estate event (R)**: The ownership of a real estate property, from the start age (purchase) to the end age (sale). In this case the fields are a bit different:
   - The name has to match the corresponding mortgage event (if there is one) exactly.
   - The value is the down payment if you buy it with a mortgage, otherwise it's the full price of the property.
-  - The starting age is the age you'll be when you purchase this property. If you already own it, you can enter 0 here.
+  - The starting age is the age you'll be when you purchase this property, or the age you were when you purchased it, if you already own it.
   - The ending age is the age you'll be when you sell the property. If you don't intend to ever sell it, enter 101 or greater, as the simulation goes to 100 years old.
-  - The rate of growth is the expected market appreciation of the property.
+  - The rate of growth is the expected market appreciation of the property. For properties bought in the past, you can calculate the appreciation using the current market value.
 - **Mortgage event (M)**: This event has to have a corresponding real estate event (but a real estate event does not need a mortgage event)
   - The name has to match the corresponding real estate event exactly.								
   - The value is the yearly re-payment. You can get this number from [mortgage.ie](https://www.mortgages.ie/go/first_time_buyers/mortgage_payments_calculator) (multiply the monthly repayment by 12).
@@ -70,6 +70,7 @@ These are the supported event types:
   - The rate of growth is the mortgage loan rate.
   - The starting age of a mortgage (and corresponding purchase) can be before the current age. In that case the simulation will start with the correct number of loan re-payments already made.
   - You can sell a property before the loan is fully paid, the value you'll get takes the remaining debt into account.
+  - Keep in mind that properties you already own will appreciate according to the growth rate you specify (or inflation if left blank) from the date you purchased, so unless you entered a growth rate of 0%, the real estate asset value at the starting age of the simulation will include the appreciation since the time of purchase.
 
 ### Cashflow graph
 
