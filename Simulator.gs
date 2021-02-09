@@ -123,7 +123,7 @@ function run() {
       break;
     }
     let type = name.substr(0, pos);
-    let valid = { "RI": "Rental Income", "SI": "Salary Income", "UI": "RSU Income", "E": "Expense", "R": "Real Estate", "M": "Mortgage", "SM": "Stock Market" };
+    let valid = { "RI": "Rental Income", "SI": "Salary Income", "UI": "RSU Income", "FI" : "Tax-free Income", "E": "Expense", "R": "Real Estate", "M": "Mortgage", "SM": "Stock Market" };
     if (!valid.hasOwnProperty(type)) {
       Events.getCell(i, 1).setNote("Invalid event type. Valid types are: " + Object.keys(valid).map(key => { return key + " (" + valid[key] + ")" }).join(", "));
       Events.getCell(i, 1).setBackground("#ffe066");
@@ -263,6 +263,7 @@ function run() {
       incomeStatePension = 0;
       incomeEtfRent = 0;
       incomeTrustRent = 0;
+      incomeTaxFree = 0;
       pensionContribution = 0;
       cashDeficit = 0;
       cashWithdraw = 0;
@@ -330,6 +331,11 @@ function run() {
               revenue.declareNonEuSharesIncome(amount);
             }
             break;
+          case 'FI': // Tax-free income
+            if (age >= event.fromAge && age <= event.toAge && amount > 0) {
+              incomeTaxFree += amount;
+            }
+            break;
           case 'E': // Expenses
             if (age >= event.fromAge && age <= event.toAge) {
               expenses += amount;
@@ -371,7 +377,7 @@ function run() {
         }
       }
 
-      netIncome = revenue.netIncome();
+      netIncome = revenue.netIncome() + incomeTaxFree;
 
       if (netIncome > expenses) {
         savings = netIncome - expenses;
@@ -441,7 +447,7 @@ function run() {
       dataSheet[row].incomeStatePension += incomeStatePension;
       dataSheet[row].incomeEtfRent += Math.max(incomeEtfRent - etfTax, 0);
       dataSheet[row].incomeTrustRent += Math.max(incomeTrustRent - trustTax, 0);
-      dataSheet[row].incomeCash += Math.max(cashWithdraw, 0);
+      dataSheet[row].incomeCash += Math.max(cashWithdraw, 0) + incomeTaxFree;
       dataSheet[row].realEstateCapital += realEstate.getTotalValue();
       dataSheet[row].netIncome += netIncome;
       dataSheet[row].expenses += expenses;
