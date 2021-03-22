@@ -99,7 +99,10 @@ The columns are mostly self-explanatory. The cash column under income may raise 
 - If you leave the StdDev parameters at 0% for all three investment vehicles, it will run the simulation once, without any variability, and it will tell you at what age you ran out of money. If you want to see the effect of a change in your parameters (other than volatility), it's best to set the volatility to zero. That way it's deterministic, and any change in outcome is the direct result of the change to your scenario. Once you introduce volatility and run the Monte Carlo simulation, the only meaningful outcome is the percentage of success.
 
 ### Known issues
-- State pension is only computed for one person. The private pension contribution percentage is assumed to be the same for both individuals.
+- State pension is only computed for one person.					
+- The private pension contribution percentage is assumed to be the same for both individuals.
+- The €115K gross income limit on which pension tax relief can be claimed is not taken into account (thanks Lukasz for finding this issue).
+- The pension lump sum withdrawal of 25% upon retirement is not being capped at €200K as it should (thanks Lukasz for finding this issue).
 - Some ETFs and investment trusts pay dividends which are taxed at 52%. When building this simulator I assumed the use of investments that accumulate dividends.
 - There's other types of investments that pay different taxes on dividends and gains, I only implemented EU-based ETFs and trusts.
 
