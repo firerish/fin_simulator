@@ -4,10 +4,10 @@ class Revenue {
     this.reset();
     this.people = 1;
     this.pensionContribEarningLimit = 115000;
-    this.itEmployeeTaxCredit = 1650;
+    this.itEmployeeTaxCredit = 1700;
     this.itExemptionLimit = 18000;
     this.itExemptionAge = 65;
-    this.itMarriedBandIncrease = 26300;
+    this.itMarriedBandIncrease = 27800;
     this.itLowerBandRate = 0.2;
     this.itHigherBandRate = 0.4;
     this.ageTaxCredit = 245;
@@ -16,8 +16,8 @@ class Revenue {
     this.uscExemptAmount = 13000;
     this.usc70notExceed = 60000;
     this.uscLimit1 = 12012;
-    this.uscLimit2 = 8472;
-    this.uscLimit3 = 49560;
+    this.uscLimit2 = 21295;
+    this.uscLimit3 = 70044;
     this.uscRate1 = 0.005;
     this.uscRate2 = 0.020;
     this.uscRate3 = 0.045;
@@ -124,8 +124,8 @@ class Revenue {
       let exempt = adjust_(this.uscExemptAmount, inflation);
       let exceed = adjust_(this.usc70notExceed, inflation);
       let limit1 = adjust_(this.uscLimit1, inflation);
-      let limit2 = adjust_(this.uscLimit2, inflation);
-      let limit3 = adjust_(this.uscLimit3, inflation);
+      let limit2 = adjust_(this.uscLimit2 - this.uscLimit1, inflation);
+      let limit3 = adjust_(this.uscLimit3 - this.uscLimit2, inflation);
       let tax = 0;
       if (taxable > exempt) {
         if (age >= 70 && taxable <= exceed) {
